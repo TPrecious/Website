@@ -18,7 +18,6 @@ function ResetPassword() {
             Email: "",
         },
         onSubmit: (values) => {
-            console.log("jjh")
             //call firebase to signup 
             resetPassword(values, onSuccess, onFaliure)
         },

@@ -5,7 +5,6 @@ import store from "../store";
 export const getListOfQuestions = async () => {
   const db = getFirestore();
   const q = query(collection(db, "questions"));
-  console.log("got here1")
   const querySnapshot = await getDocs(q);
   const questions = []
   querySnapshot.forEach((doc) => {
@@ -39,7 +38,6 @@ export const submitAnswers = async (answers, onSuccess, isLast, onFailure,) => {
         }
       })
       .catch((error) => {
-        console.log("emailNotSent", error.message);
         // ..
         if (onFailure) {
           onFailure(error.message);
@@ -50,12 +48,10 @@ export const submitAnswers = async (answers, onSuccess, isLast, onFailure,) => {
       .then((d) => {
         if (onSuccess) {
           answers = { id: d.id, ...answers }
-          console.log("answers add", answers)
           onSuccess(answers);
         }
       })
       .catch((error) => {
-        console.log(error.message);
         // ..
         if (onFailure) {
           onFailure(error.message);
@@ -86,7 +82,6 @@ export const getAnswers = async (uid) => {
     answers[data.questionId] = data
   });
   store.answers.set(answers);
-  console.log(answers, "+++")
 };
 
 export const countCorrect = async (uid) => {
@@ -140,7 +135,6 @@ export const showResults = async ( uid ) => {
     // console.log("got here", questions)
     store.results.set(results)
   } catch (e) {
-    console.log(e.message)
   }
 }
 
@@ -150,8 +144,9 @@ const submitResults = async (results) => {
     .then((d) => {
     })
     .catch((error) => {
-      console.log("resultsNotSubmitted", error.message);
       throw error
     });
 };
+
+
 

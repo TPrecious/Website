@@ -21,7 +21,6 @@ function Completed() {
             <div>
                 <div className="container">
                     <div className="typedout font-BebasNeue"> You have completed the JHB coding test. </div>
-                    <div className="typedout font-BebasNeue"> If you want to retake the test please, </div>
                     <div className="typedout font-BebasNeue"> contact "tayoakinbode10@gmail.com"</div>
                 </div>
 

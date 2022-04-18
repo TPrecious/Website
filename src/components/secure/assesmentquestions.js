@@ -16,7 +16,6 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
     const q = listOfQuestions[currentQuestionIndex]
     const questionId = q?.id
     const selectedAnswers = answersDictionary[questionId]
-    console.log(answersDictionary[questionId], "xyz")
     useEffect(() => {
         setAnswers(selectedAnswers)
     }, [selectedAnswers])
@@ -34,7 +33,6 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
     })
     const questionsIndex = currentQuestionIndex
     const next = () => {
-        console.log(answers, '+++')
         submitAnswers(answers, onNextSuccess)
     }
     const previous = () => {
@@ -111,7 +109,6 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
                                 <div>
                                     Answer:<input value={answers?.answer || ""} onChange={(e) => {
                                         setAnswers({ ...answers, answer: e.target.value, questionId: q.id, uid: user.uid.get() })
-                                        console.log(answers, '---')
                                     }} className='text-cyan-300 mb-5 border-b-2 border-black bg-zinc-100 md:w-1/2 h-10   py-2 w-full placeholder:text-black-200 font-md  text-left md:text-3xl sm:text-2xl text-center' id="Answer" name="Answer" placeholder='Enter Text' />
                                 </div>
                             }</div>

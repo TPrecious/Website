@@ -7,8 +7,7 @@ import AssesmentQuestions from "./assesmentquestions";
 import Completed from "./completed";
 
 function Home() {
-    const { user, questions, answers, results} = useState(store)
-    console.log("aaa",results.length)
+    const { user, questions, answers, results} = useState(store)   
     useEffect(() => {
         showResults(user.uid.get())
         getListOfQuestions()

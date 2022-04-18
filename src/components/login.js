@@ -18,7 +18,6 @@ function Login({ name }) {
     },
     onSubmit: (values) => {
       //call firebase to signup 
-      console.log(values)
       signIn(values, onSuccess, onFaliure)
 
     },
@@ -47,8 +46,6 @@ function Login({ name }) {
   const handleEmail = (e) => { setEmail(e.target.value) }
   const handlePassword = (e) => { setPassword(e.target.value) }
   const handleLogin = () => {
-    console.log(email)
-    console.log(password)
     //this is where you submit to the server/backend
 
   }
