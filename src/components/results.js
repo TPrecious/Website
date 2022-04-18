@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import "../index.css"
 
 
-function Post() {
+function Result() {
     const { user, results } = useState(store)
     const uid = user.uid.get()
     return (
@@ -23,5 +23,5 @@ function Post() {
     )
 };
 
-export default Post;
+export default Result;
 
