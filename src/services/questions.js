@@ -17,7 +17,7 @@ export const getListOfQuestions = async () => {
   store.questions.set(questions)
 
 }
-export const submitAnswers = async (answers, onSuccess, onFailure, isLast) => {
+export const submitAnswers = async (answers, onSuccess, isLast, onFailure,) => {
   const isCorrect = await checkCorrect(answers)
   answers = { isCorrect, ...answers }
   const db = getFirestore();
@@ -67,7 +67,7 @@ export const checkCorrect = async ({ questionId, answer }) => {
   const db = getFirestore();
   const q = query(collection(db, "answers"),
     where("questionid", "==", questionId),
-    where("answer", "==", answer));
+    where("answer", "==", answer?.toLowerCase()));
 
   const querySnapshot = await getDocs(q);
   const isCorrect = querySnapshot.size === 1
@@ -91,41 +91,57 @@ export const getAnswers = async (uid) => {
 
 export const countCorrect = async (uid) => {
   const db = getFirestore();
-  const q = query(collection(db, "submission"),
+  const q = query(collection(db, "submissions"),
     where("isCorrect", "==", true),
     where("uid", "==", uid));
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.size
+  const correct = []
+  querySnapshot.forEach((doc) => {
+
+    correct.push(doc.data())
+
+  });
+  return correct.length
 
 
 };
 
 export const countIncorrect = async (uid) => {
   const db = getFirestore();
-  const q = query(collection(db, "submission"),
+  const q = query(collection(db, "submissions"),
     where("isCorrect", "==", false),
     where("uid", "==", uid));
 
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.size
+    const querySnapshot = await getDocs(q);
+    const incorrect = []
+    querySnapshot.forEach((doc) => {
+  
+      incorrect.push(doc.data())
+  
+    });
+    return incorrect.length
 
 
 };
 
-export const showResults = async ({ uid }) => {
+export const showResults = async ( uid ) => {
   const db = getFirestore();
-  const q = query(collection(db, "results"),
-    where("uid", "==", uid));
-  const querySnapshot = await getDocs(q);
-  const results = []
-  querySnapshot.forEach((doc) => {
+  try {
+    const q = query(collection(db, "results"),
+      where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    const results = []
+    querySnapshot.forEach((doc) => {
 
-    results.push(doc.data())
+      results.push(doc.data())
 
-  });
-  // console.log("got here", questions)
-  store.results.set(results)
+    });
+    // console.log("got here", questions)
+    store.results.set(results)
+  } catch (e) {
+    console.log(e.message)
+  }
 }
 
 const submitResults = async (results) => {

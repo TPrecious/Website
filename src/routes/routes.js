@@ -11,6 +11,9 @@ import NotFound from "../components/notfound";
 import Home from "../components/secure/home";
 import RequireAuth from "../services/require-auth";
 import PreTestPage from '../components/pretestpage';
+import Completed from "../components/secure/completed";
+import Results from "../components/results";
+
 
 const MyRoutes = () => {
     return (
@@ -22,16 +25,26 @@ const MyRoutes = () => {
             <Route path="/ResetPassword" element={<ResetPassword />} />
             <Route path="/Settings" element={<Settings />} />
             <Route path="/SignUP" element={<SignUp />} />
+            <Route path="/Results" element={
+                <RequireAuth>
+                    <Results />
+                </RequireAuth>
+            } />
+            <Route path="/Completed" element={
+                <RequireAuth>
+                    <Completed />
+                </RequireAuth>
+            } />
             <Route path="/Home" element={
-                 <RequireAuth>
+                <RequireAuth>
                     <Home />
-                 </RequireAuth>
-            }/>
+                </RequireAuth>
+            } />
             <Route path="/PreTestPage" element={
-             <RequireAuth> 
-                 <PreTestPage />
-             </RequireAuth> 
-             } />
+                <RequireAuth>
+                    <PreTestPage />
+                </RequireAuth>
+            } />
             <Route path="/Profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
         </Routes>

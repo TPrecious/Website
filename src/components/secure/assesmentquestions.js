@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useFormik } from "formik";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { submitAnswers } from "../../services/questions";
 import { useState as useGlobalState } from "@hookstate/core";
 import store from "../../store";
 
 const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
+    const navigate = useNavigate()
     const { user } = useGlobalState(store)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [answers, setAnswers] = useState({})
@@ -15,7 +16,7 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
     const q = listOfQuestions[currentQuestionIndex]
     const questionId = q?.id
     const selectedAnswers = answersDictionary[questionId]
-    console.log(answers, "***")
+    console.log(answersDictionary[questionId], "xyz")
     useEffect(() => {
         setAnswers(selectedAnswers)
     }, [selectedAnswers])
@@ -27,7 +28,7 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
         },
         onSubmit: async (values) => {
             setProcessing(true)
-            submitAnswers(answers, onSuccess)
+            submitAnswers(answers, onSuccess, true)
         },
 
     })
@@ -43,13 +44,14 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
     const onNextSuccess = (answers) => {
         setCurrentQuestionIndex(currentQuestionIndex + 1)
         setPreviousAnswers(answers)
+        //setAnswers({answer: ''})
     }
     const onSuccess = () => {
-        //navigate to a another page after submission
+        navigate("/Completed")
     }
     let buttonHtml;
-    const nextButton = <button className=" m-3 bg-white hover:bg-blue-700 font-bold text-cyan-300 py-2 px-4 md: w-1/5 rounded-full place-items-center" onClick={next} type="button"> Next</button>
-    const previousButton = <button type="button" onClick={previous}> Previous</button>
+    const nextButton = <button className=" m-3 bg-white hover:bg-blue-700 font-bold text-cyan-300 py-2 px-4 md: w-1/6 rounded-full place-items-center" onClick={next} type="button"> Next</button>
+    const previousButton = <button className="m-3 bg-white hover:bg-blue-700 font-bold text-cyan-300 py-2 px-4 md: w-1/6 rounded-full place-items-center" type="button" onClick={previous}> Previous</button>
     if (questionsIndex === 0) {
         buttonHtml = (
             <>
@@ -60,7 +62,7 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
         buttonHtml = (
             <>
                 {previousButton}
-                <button className=" m-3 bg-white hover:bg-blue-700 font-bold text-cyan-300 py-2 px-4 md: w-1/5 rounded-full place-items-center" type="button"> Submit</button>
+                <button className=" m-3 bg-white hover:bg-blue-700 font-bold text-cyan-300 py-2 px-4 md: w-1/6 rounded-full place-items-center" type="submit"> Submit</button>
             </>
         );
     } else {
@@ -72,7 +74,7 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
         )
     }
     return (
-        <div className="grid grid rows-3 w-full mx-auto text-center text-5xl text-white bg-cyan-200 h-screen font-BebasNeue">
+        <div className="grid grid rows-3 w-full mx-auto text-center text-5xl text-white bg-gradient-to-r from-cyan-300  to-blue-400 h-screen font-BebasNeue">
             <form onSubmit={formik.handleSubmit}>
                 <div >
                     <div key={`questions${questionsIndex}`}>
@@ -107,10 +109,10 @@ const AssessmentQuestions = ({ listOfQuestions, answersDictionary }) => {
                                 :
 
                                 <div>
-                                    Answer:<input value={answers?.answer} onChange={(e) => {
+                                    Answer:<input value={answers?.answer || ""} onChange={(e) => {
                                         setAnswers({ ...answers, answer: e.target.value, questionId: q.id, uid: user.uid.get() })
                                         console.log(answers, '---')
-                                    }} className="text-cyan-200" id="Answer" name="Answer" placeholder='Enter Text' />
+                                    }} className='text-cyan-300 mb-5 border-b-2 border-black bg-zinc-100 md:w-1/2 h-10   py-2 w-full placeholder:text-black-200 font-md  text-left md:text-3xl sm:text-2xl text-center' id="Answer" name="Answer" placeholder='Enter Text' />
                                 </div>
                             }</div>
 
